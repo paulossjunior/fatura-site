@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Fatura</title>
+<meta name="description" content="O Fatura lê o seu Gmail e guarda cada PDF de fatura numa pasta do seu computador, com nome e data. Só lê: nada é apagado, nada sai do seu computador.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="estilo.css">
+<style>
+  /* hero: a caixa de entrada bagunçada vira uma pasta organizada */
+  .hero { padding-block: 72px 56px; }
+  .hero .envoltorio { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+  .hero-texto { display: flex; flex-direction: column; gap: 22px; }
+  .hero-texto .rotulo { color: var(--destaque); }
+  .hero-texto p.sub { font-size: var(--t-2); color: var(--tinta-suave); max-width: 34rem; }
+  .acoes { display: flex; flex-wrap: wrap; gap: 12px; }
+  .garantias { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: var(--t-0); color: var(--secundario); }
+  .garantias span { display: inline-flex; align-items: center; gap: 6px; }
+  .garantias svg { width: 15px; height: 15px; color: var(--destaque); }
+
+  .demo { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .caixa, .pasta { background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; overflow: hidden; }
+  .caixa header, .pasta header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--linha); font-size: var(--t-0); color: var(--secundario); }
+  .caixa ul, .pasta ul { list-style: none; margin: 0; padding: 6px 0; }
+  .caixa li { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px; padding: 7px 16px; font-size: 0.875rem; }
+  .caixa li .de { color: var(--secundario); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .caixa li .assunto { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .caixa li.fora .assunto { color: var(--secundario); text-decoration: line-through; text-decoration-color: var(--secundario); }
+  .caixa li.fatura .assunto { font-weight: 600; }
+  .seta { display: flex; justify-content: center; color: var(--destaque); font-size: var(--t-0); gap: 8px; align-items: center; }
+  .seta svg { width: 18px; height: 18px; }
+  .pasta li { display: flex; align-items: center; gap: 10px; padding: 6px 16px; font-family: var(--fonte-mono); font-size: 0.8125rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pasta li.dir { color: var(--secundario); font-weight: 500; padding-top: 10px; }
+  .pasta li.pdf { padding-left: 34px; animation: chega 0.6s cubic-bezier(.2,.7,.2,1) both; }
+  .pasta li.pdf:nth-of-type(3) { animation-delay: .15s; } .pasta li.pdf:nth-of-type(5) { animation-delay: .3s; }
+  .pasta li.pdf:nth-of-type(7) { animation-delay: .45s; } .pasta li.pdf:nth-of-type(9) { animation-delay: .6s; }
+  .pasta li.pdf svg { width: 14px; height: 14px; flex: none; color: var(--destaque); }
+  @keyframes chega { from { transform: translateX(-10px); } to { transform: none; } }
+
+  /* faixas */
+  .faixa { padding-block: 80px; }
+  .faixa.escura { background: var(--faixa); color: var(--faixa-tinta); }
+  .faixa.escura .rotulo { color: var(--faixa-destaque); }
+  .faixa.escura p { color: var(--faixa-suave); }
+  .cabeca { display: flex; flex-direction: column; gap: 14px; max-width: 44rem; margin-bottom: 40px; }
+
+  .dores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .dor { display: flex; flex-direction: column; gap: 10px; padding-top: 18px; border-top: 1px solid #33413b; }
+  .dor h3 { color: var(--faixa-tinta); }
+  .dor .mono { color: var(--faixa-destaque); font-size: 0.8125rem; }
+
+  .passos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; counter-reset: passo; }
+  .passos li { display: flex; flex-direction: column; gap: 10px; counter-increment: passo; }
+  .passos li::before { content: counter(passo); font-family: var(--fonte-titulo); font-weight: 700; font-size: 2.75rem; line-height: 1; color: var(--destaque); }
+  .passos p { color: var(--tinta-suave); }
+
+  .recursos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 56px; }
+  .recurso { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 16px; }
+  .recurso svg { grid-row: span 2; width: 28px; height: 28px; color: var(--destaque); margin-top: 2px; }
+  .recurso p { color: var(--tinta-suave); }
+
+  .bancos { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .bancos span { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border: 1px solid var(--linha); border-radius: 999px; background: var(--superficie); font-weight: 500; }
+  .bancos span.mais { border-style: dashed; color: var(--secundario); }
+
+  .privacidade { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+  .lista-check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+  .lista-check li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; }
+  .lista-check svg { width: 20px; height: 20px; color: var(--faixa-destaque); margin-top: 3px; }
+  .lista-check strong { color: var(--faixa-tinta); }
+
+  .baixar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .sistema { display: flex; flex-direction: column; gap: 8px; padding: 22px; border: 1px solid var(--linha); border-radius: 14px; background: var(--superficie); }
+  .sistema .requisito { font-size: var(--t-0); color: var(--secundario); }
+  .sistema .estado { margin-top: 8px; display: inline-flex; align-self: flex-start; min-height: 32px; align-items: center; padding: 0 12px; border-radius: 999px; background: var(--aviso-fundo); color: var(--aviso-tinta); font-size: var(--t-0); font-weight: 600; }
+
+  .perguntas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 48px; }
+  details { border-top: 1px solid var(--linha); padding-block: 16px; }
+  summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--destaque); font-weight: 700; }
+  details[open] summary::after { content: "−"; }
+  details p { margin-top: 10px; color: var(--tinta-suave); }
+
+  .chamada { text-align: left; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding: 40px; border-radius: 18px; background: var(--destaque-claro); }
+  .chamada h2 { max-width: 30rem; }
+
+  @media (max-width: 900px) {
+    .hero .envoltorio, .privacidade { grid-template-columns: minmax(0, 1fr); }
+    .dores, .passos, .baixar { grid-template-columns: minmax(0, 1fr); }
+    .recursos, .perguntas { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .caixa li { grid-template-columns: 84px minmax(0, 1fr); }
+    .chamada { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="envoltorio">
+    <a class="marca" href="index.html">
+      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="3" width="18" height="22" rx="3"></rect><path d="M9.5 9.5h9M9.5 14h9M9.5 18.5h5.5"></path></svg>
+      Fatura
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#privacidade">Privacidade</a>
+      <a href="#perguntas">Perguntas</a>
+      <a href="ajuda/index.html">Ajuda</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="envoltorio">
+      <div class="hero-texto">
+        <span class="rotulo">Para Gmail · macOS, Windows e Linux</span>
+        <h1>Suas faturas saem do email e chegam sozinhas à pasta certa.</h1>
+        <p class="sub">O Fatura lê o seu Gmail, reconhece as faturas do cartão e as notas dos seus fornecedores e guarda cada PDF numa pasta do computador, com o nome do banco e a data.</p>
+        <div class="acoes">
+          <a class="botao principal" href="#baixar">Baixar o Fatura</a>
+          <a class="botao secundario" href="ajuda/primeiros-passos.html">Ver os primeiros passos</a>
+        </div>
+        <div class="garantias">
+          <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 8.4l3 2.9 7-7.3"></path></svg>Só lê o email</span>
+          <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 8.4l3 2.9 7-7.3"></path></svg>Nada sai do seu computador</span>
+          <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 8.4l3 2.9 7-7.3"></path></svg>Nunca baixa a mesma fatura duas vezes</span>
+        </div>
+      </div>
+
+      <figure class="demo" aria-label="Exemplo: emails da caixa de entrada viram PDFs organizados em pastas">
+        <div class="caixa">
+          <header><span>Caixa de entrada</span><span>Gmail</span></header>
+          <ul>
+            <li class="fatura"><span class="de">Santander</span><span class="assunto">Sua fatura do cartão chegou</span></li>
+            <li class="fora"><span class="de">Santander</span><span class="assunto">Oferta especial: limite extra</span></li>
+            <li class="fatura"><span class="de">Inter</span><span class="assunto">Fatura Cartão Inter</span></li>
+            <li class="fora"><span class="de">Inter</span><span class="assunto">Seu Informe de Rendimentos já está disponível</span></li>
+            <li class="fatura"><span class="de">você</span><span class="assunto">Fwd: Your receipt from Anthropic, PBC</span></li>
+            <li class="fatura"><span class="de">colega</span><span class="assunto">Fwd: [Serpro] - NF e Boleto API Consulta NFE</span></li>
+          </ul>
+        </div>
+        <div class="seta" aria-hidden="true">
+          <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 3v12M4 10l5 5 5-5"></path></svg>
+          só os PDFs que importam
+        </div>
+        <div class="pasta">
+          <header><span>~/Faturas</span><span>no seu computador</span></header>
+          <ul>
+            <li class="dir">santander/</li>
+            <li class="pdf"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 1.5h5.5L11 4v8.5H3z"></path></svg>santander-fatura-2026-09-29.pdf</li>
+            <li class="dir">inter/</li>
+            <li class="pdf"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 1.5h5.5L11 4v8.5H3z"></path></svg>inter-fatura-2026-10-10.pdf</li>
+            <li class="dir">anthropic/</li>
+            <li class="pdf"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 1.5h5.5L11 4v8.5H3z"></path></svg>Invoice-A1B2C3D4-0025.pdf</li>
+            <li class="dir">serpro/</li>
+            <li class="pdf"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 1.5h5.5L11 4v8.5H3z"></path></svg>2026-10-05-…-NFe.pdf</li>
+            <li class="pdf"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 1.5h5.5L11 4v8.5H3z"></path></svg>2026-10-05-…-Boleto.pdf</li>
+          </ul>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="faixa escura" aria-labelledby="t-problema">
+    <div class="envoltorio">
+      <div class="cabeca">
+        <span class="rotulo">Todo mês, a mesma caça</span>
+        <h2 id="t-problema">A fatura está no seu email. Achar ela é que dá trabalho.</h2>
+        <p>Cada banco manda de um jeito, com assunto diferente, junto de propaganda e aviso. Quando você precisa de todas de uma vez, a tarde vai embora.</p>
+      </div>
+      <div class="dores">
+        <div class="dor">
+          <h3>A busca traz tudo, menos a fatura</h3>
+          <p>Pesquisar "fatura" devolve promoção, aviso de pagamento e informe de rendimentos misturados com o que você quer.</p>
+          <span class="mono">busca: "fatura" → promoção, aviso, informe…</span>
+        </div>
+        <div class="dor">
+          <h3>O PDF some em email encaminhado</h3>
+          <p>A nota do fornecedor chegou para um colega, que encaminhou para você, que encaminhou de novo. O anexo está em algum lugar no meio.</p>
+          <span class="mono">Fwd: Fwd: Fwd: Nota fiscal</span>
+        </div>
+        <div class="dor">
+          <h3>O ano inteiro, no dia do imposto</h3>
+          <p>Declaração, prestação de contas, reembolso: alguém pede doze meses de faturas, e você abre email por email baixando um anexo de cada vez.</p>
+          <span class="mono">jan, fev, mar, … dez</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa" id="como-funciona" aria-labelledby="t-como">
+    <div class="envoltorio">
+      <div class="cabeca">
+        <span class="rotulo">Como funciona</span>
+        <h2 id="t-como">Configure uma vez. Depois, é só abrir o app.</h2>
+      </div>
+      <ol class="passos">
+        <li>
+          <h3>Conecte o seu Gmail</h3>
+          <p>Você cria uma senha de app no Google e informa no Fatura. Ela só permite ler a caixa e fica guardada no cofre de senhas do seu sistema.</p>
+        </li>
+        <li>
+          <h3>Diga desde quando buscar</h3>
+          <p>Na primeira vez, escolha uma data, por exemplo 1º de janeiro do ano passado. O Fatura busca tudo desde então, banco por banco, e mostra o andamento.</p>
+        </li>
+        <li>
+          <h3>Abra a fatura do mês</h3>
+          <p>Cada PDF fica numa pasta do banco, com a data no nome. Toda vez que você abre o app, ele busca o que chegou de novo.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="faixa" aria-labelledby="t-recursos">
+    <div class="envoltorio">
+      <div class="cabeca">
+        <span class="rotulo">O que ele faz por você</span>
+        <h2 id="t-recursos">Só o PDF certo, uma vez, no lugar certo.</h2>
+      </div>
+      <div class="recursos">
+        <div class="recurso">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3l9 3.6v6.8c0 5.4-3.8 9.9-9 11.6-5.2-1.7-9-6.2-9-11.6V6.6z"></path><path d="M9.5 14l3.2 3.2 5.8-6"></path></svg>
+          <h3>Ignora golpe que imita o banco</h3>
+          <p>Antes de baixar, o Fatura confere a assinatura digital que o Gmail registra em cada email. Um email que só finge ser do banco não passa.</p>
+        </div>
+        <div class="recurso">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10l5 5v17H7z"></path><path d="M17 3v5h5M11 14h7M11 18h7"></path></svg>
+          <h3>Pega só a fatura</h3>
+          <p>Propaganda, comprovante de pagamento, informe de rendimentos e imagens ficam de fora. Só entra o que é PDF de verdade.</p>
+        </div>
+        <div class="recurso">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h18M5 15h18M5 21h11"></path><path d="M20 19l2.5 2.5L26 18"></path></svg>
+          <h3>Nunca baixa duas vezes</h3>
+          <p>Fatura reenviada, email encaminhado de novo, busca repetida: o mesmo PDF fica guardado uma única vez.</p>
+        </div>
+        <div class="recurso">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7"></circle><path d="M17.5 17.5L24 24"></path></svg>
+          <h3>Acha qualquer mês em segundos</h3>
+          <p>Filtre por banco ou digite o mês, como <span class="mono">2026-09</span>. Cada arquivo mostra de qual email veio e quando chegou.</p>
+        </div>
+        <div class="recurso">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6h18v12H5z"></path><path d="M10 23h8M14 18v5"></path></svg>
+          <h3>Funciona com email encaminhado</h3>
+          <p>A conta da empresa não deixa conectar? Encaminhe os recibos para o seu Gmail e o Fatura reconhece quem encaminhou.</p>
+        </div>
+        <div class="recurso">
+          <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14h4l3-7 6 14 3-7h4"></path></svg>
+          <h3>Teste antes de mudar</h3>
+          <p>Ao ajustar as regras de um banco, o botão Testar mostra o que seria baixado nos emails recentes, e por quê, sem baixar nada.</p>
+        </div>
+      </div>
+      <div class="bancos" aria-label="Emissores reconhecidos hoje">
+        <span>Santander</span><span>Inter</span><span>Anthropic</span><span>SendGrid</span><span>SERPRO</span>
+        <span class="mais">outros, configurando o remetente</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa escura" id="privacidade" aria-labelledby="t-privacidade">
+    <div class="envoltorio privacidade">
+      <div class="cabeca">
+        <span class="rotulo">Privacidade</span>
+        <h2 id="t-privacidade">Seus dados financeiros não saem do seu computador.</h2>
+        <p>O Fatura não tem servidor, conta ou nuvem própria. Ele conversa só com o Gmail, e o que baixa fica nas suas pastas.</p>
+        <p><a href="ajuda/seguranca.html" style="color: var(--faixa-destaque)">Como o Fatura protege seus dados</a></p>
+      </div>
+      <ul class="lista-check">
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 10.5l4 3.8 8-8.6"></path></svg><span><strong>Só leitura.</strong> Nenhum email é marcado como lido, movido ou apagado.</span></li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 10.5l4 3.8 8-8.6"></path></svg><span><strong>Senha no cofre do sistema.</strong> Chaves do macOS, Gerenciador de Credenciais do Windows ou chaveiro do Linux. Nunca em arquivo de texto.</span></li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 10.5l4 3.8 8-8.6"></path></svg><span><strong>Nada de rastreamento.</strong> Sem estatísticas de uso e sem envio de dados para lugar nenhum.</span></li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 10.5l4 3.8 8-8.6"></path></svg><span><strong>Nada é apagado.</strong> Os PDFs ficam nas suas pastas até você decidir removê-los.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="faixa" id="baixar" aria-labelledby="t-baixar">
+    <div class="envoltorio">
+      <div class="cabeca">
+        <span class="rotulo">Baixar</span>
+        <h2 id="t-baixar">Escolha o seu sistema.</h2>
+        <p>Você vai precisar de uma conta Gmail com verificação em duas etapas ativa.</p>
+      </div>
+      <div class="baixar">
+        <div class="sistema">
+          <h3>macOS</h3>
+          <span class="requisito">macOS 13 ou mais recente</span>
+          <span class="estado">Instalador em preparação</span>
+        </div>
+        <div class="sistema">
+          <h3>Windows</h3>
+          <span class="requisito">Windows 10 ou mais recente</span>
+          <span class="estado">Instalador em preparação</span>
+        </div>
+        <div class="sistema">
+          <h3>Linux</h3>
+          <span class="requisito">Distribuições com WebKitGTK 4.1</span>
+          <span class="estado">Instalador em preparação</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa" id="perguntas" aria-labelledby="t-perguntas">
+    <div class="envoltorio">
+      <div class="cabeca">
+        <span class="rotulo">Perguntas</span>
+        <h2 id="t-perguntas">Antes de começar</h2>
+      </div>
+      <div class="perguntas">
+        <div>
+          <details><summary>O Fatura apaga ou mexe nos meus emails?</summary><p>Não. Ele abre a caixa em modo de leitura. Os emails continuam como estavam, inclusive os não lidos.</p></details>
+          <details><summary>Funciona com Outlook, Yahoo ou outro email?</summary><p>Hoje, só com Gmail. Se as faturas chegam em outro email, dá para encaminhá-las automaticamente para o seu Gmail.</p></details>
+          <details><summary>Preciso deixar o app aberto?</summary><p>Não. Sempre que você abre o Fatura, ele busca o que chegou desde a última vez. Você também pode clicar em Buscar novas quando quiser.</p></details>
+          <details><summary>Onde ficam os arquivos?</summary><p>Numa pasta <span class="mono">Faturas</span> dentro da sua pasta de usuário, com uma subpasta para cada banco. Você pode trocar a pasta de qualquer banco.</p></details>
+        </div>
+        <div>
+          <details><summary>O PDF da fatura pede senha. É normal?</summary><p>Sim. Alguns bancos protegem o PDF com uma senha definida por eles. O Fatura guarda o arquivo exatamente como chegou; abra com a senha do banco.</p></details>
+          <details><summary>Uso o email da empresa. Funciona?</summary><p>Contas de empresa costumam bloquear a senha de app. Crie um filtro que encaminhe os recibos para o seu Gmail e informe no Fatura quem encaminha.</p></details>
+          <details><summary>Meu banco não está na lista. E agora?</summary><p>Qualquer emissor que mande PDF por email pode ser incluído informando o remetente e um trecho do assunto. Veja como na <a href="ajuda/como-fazer.html#outro-banco">ajuda</a>.</p></details>
+          <details><summary>Por que uma "senha de app" e não a minha senha?</summary><p>A senha de app é criada só para o Fatura, não dá acesso à sua conta Google e pode ser revogada a qualquer momento sem trocar a sua senha principal.</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-chamada">
+    <div class="envoltorio">
+      <div class="chamada">
+        <h2 id="t-chamada">Na próxima vez que pedirem as faturas do ano, abra uma pasta.</h2>
+        <a class="botao principal" href="ajuda/primeiros-passos.html">Começar agora</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="envoltorio">
+    <span>Fatura · faturas do Gmail organizadas no seu computador</span>
+    <nav aria-label="Rodapé">
+      <a href="ajuda/index.html">Ajuda</a>
+      <a href="ajuda/primeiros-passos.html">Primeiros passos</a>
+      <a href="ajuda/seguranca.html">Segurança</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

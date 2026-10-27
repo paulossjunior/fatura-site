@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Tarefas do dia a dia</title>
+<meta name="description" content="Encontrar a fatura de um mês, abrir PDF com senha, usar email da empresa, mudar a pasta e resolver problemas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header class="topo">
+  <div class="envoltorio">
+    <a class="marca" href="../index.html">
+      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="3" width="18" height="22" rx="3"></rect><path d="M9.5 9.5h9M9.5 14h9M9.5 18.5h5.5"></path></svg>
+      Fatura
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#baixar">Baixar</a>
+      <a href="index.html">Ajuda</a>
+    </nav>
+  </div>
+</header>
+<div class="envoltorio ajuda">
+  <nav class="indice" aria-label="Ajuda">
+    <div><span class="rotulo">Comece aqui</span><a href="primeiros-passos.html">Primeiros passos</a></div>
+    <div><span class="rotulo">Como fazer</span><a href="como-fazer.html" aria-current="page">Tarefas do dia a dia</a></div>
+    <div><span class="rotulo">Referência</span><a href="telas.html">As telas do app</a></div>
+    <div><span class="rotulo">Entenda</span><a href="seguranca.html">Segurança e privacidade</a></div>
+  </nav>
+  <main class="texto">
+    <span class="trilha"><a href="index.html">Ajuda</a> / Como fazer</span>
+    <h1>Tarefas do dia a dia</h1>
+    <p class="abertura">Receitas curtas para o que você vai fazer com mais frequência. Cada uma parte do Fatura já configurado; se ainda não fez isso, comece pelos <a href="primeiros-passos.html">primeiros passos</a>.</p>
+
+    <h2 id="achar-fatura">Encontrar a fatura de um mês</h2>
+    <ol>
+      <li>Na tela de documentos, clique no banco, à esquerda, ou deixe em <span class="tela-ui">Todos</span>.</li>
+      <li>No campo de busca, digite o mês como <span class="mono">2026-09</span> ou <span class="mono">09/2026</span>.</li>
+      <li>Clique na fatura e em <span class="tela-ui">Abrir PDF</span>.</li>
+    </ol>
+    <p>A busca também aceita parte do nome do arquivo ou o nome do banco, como <span class="mono">inter</span>.</p>
+
+    <h2 id="buscar-novas">Buscar faturas novas agora</h2>
+    <p>O Fatura busca sozinho toda vez que é aberto. Para buscar de novo sem fechar o app, clique em <span class="tela-ui">Buscar novas</span>. Enquanto a busca roda, o topo da tela mostra <span class="tela-ui">Buscando…</span>; quando termina, a lista se atualiza e aparece quantos documentos novos chegaram.</p>
+    <p>Se aparecer <span class="tela-ui">Busca em andamento (linha de comando)</span>, outra busca já está rodando no computador. Espere terminar; o Fatura atualiza a lista sozinho.</p>
+
+    <h2 id="pdf-senha">Abrir um PDF que pede senha</h2>
+    <p>Alguns bancos, como o Santander, protegem o PDF da fatura com uma senha definida por eles. O Fatura guarda o arquivo exatamente como chegou, e o painel avisa <span class="tela-ui">PDF protegido pelo banco</span>.</p>
+    <p>Use a senha que o banco informa para os seus PDFs. Ela costuma aparecer no próprio email da fatura ou no site do banco. O Fatura não sabe nem guarda essa senha.</p>
+
+    <h2 id="conta-empresa">Receber faturas de um email da empresa</h2>
+    <p>Contas de empresa (Google Workspace) costumam bloquear senha de app. Nesse caso, faça a conta da empresa encaminhar os recibos para o seu Gmail:</p>
+    <ol>
+      <li>No Gmail da empresa, abra <span class="tela-ui">Configurações</span> → <span class="tela-ui">Encaminhamento e POP/IMAP</span> e clique em <span class="tela-ui">Adicionar um endereço de encaminhamento</span>. Informe o seu Gmail pessoal e confirme o código que chega nele.</li>
+      <li>Crie um filtro: na busca do Gmail da empresa, abra as opções de pesquisa, preencha <span class="tela-ui">De</span> com o remetente dos recibos, clique em <span class="tela-ui">Criar filtro</span>, marque <span class="tela-ui">Encaminhar para</span> e escolha o seu Gmail.</li>
+      <li>No Fatura, abra <span class="tela-ui">Conta Gmail</span> e, em <span class="tela-ui">Contas que encaminham</span>, informe o endereço da empresa. Clique em <span class="tela-ui">Salvar</span>.</li>
+    </ol>
+    <div class="nota"><strong>O filtro só encaminha emails novos.</strong> Para recibos antigos, encaminhe um por um pelo Gmail da empresa (abrir o email → Encaminhar) para o seu Gmail; o Fatura reconhece esses encaminhamentos desde que o endereço esteja em <span class="tela-ui">Contas que encaminham</span>.</div>
+
+    <h2 id="mudar-pasta">Mudar a pasta de um banco</h2>
+    <ol>
+      <li>Na tela de documentos, clique em <span class="tela-ui">Regras dos emissores</span> e escolha o banco no topo.</li>
+      <li>Em <span class="tela-ui">Onde e com que nome</span>, clique em <span class="tela-ui">Escolher…</span> e selecione a nova pasta.</li>
+      <li>Clique em <span class="tela-ui">Salvar regras</span>.</li>
+    </ol>
+    <p>As próximas faturas vão para a nova pasta. As que já foram baixadas continuam onde estão; se você mover os arquivos antigos, veja <a href="#arquivo-sumiu">quando aparece "Arquivo não encontrado"</a>.</p>
+
+    <h2 id="nome-arquivo">Mudar o nome dos arquivos</h2>
+    <p>Em <span class="tela-ui">Regras dos emissores</span> → <span class="tela-ui">Onde e com que nome</span>, escolha uma das opções. Ao lado de cada uma aparece como ficaria o nome do último arquivo daquele banco.</p>
+    <ul>
+      <li><span class="tela-ui">Padrão</span>: banco e data, como <span class="mono">inter-fatura-2026-10-10.pdf</span>.</li>
+      <li><span class="tela-ui">Nome original</span>: o nome do anexo no email.</li>
+      <li><span class="tela-ui">Data + nome original</span>: útil quando o banco manda todo mês um anexo com o mesmo nome.</li>
+    </ul>
+
+    <h2 id="desligar">Parar de baixar de um banco</h2>
+    <p>Em <span class="tela-ui">Regras dos emissores</span>, escolha o banco, desmarque <span class="tela-ui">Emissor ativo</span> e clique em <span class="tela-ui">Salvar regras</span>. Ele some da lista à esquerda, mas as faturas já baixadas continuam em <span class="tela-ui">Todos</span>.</p>
+
+    <h2 id="outro-banco">Incluir outro banco</h2>
+    <p>Bancos novos ainda não são criados pela tela. Quem cuida da instalação do Fatura pode incluí-los no arquivo de configuração, informando o endereço que envia as faturas, o domínio do banco e um trecho fixo do assunto.</p>
+    <p>Antes de pedir, anote de um email de fatura recente: o endereço do remetente, o assunto e o nome do anexo PDF.</p>
+
+    <h2 id="trocar-senha">Trocar a senha de app</h2>
+    <ol>
+      <li>Crie uma senha nova em <a href="https://myaccount.google.com/apppasswords">myaccount.google.com/apppasswords</a> e apague a antiga na mesma página.</li>
+      <li>No Fatura, abra <span class="tela-ui">Conta Gmail</span>, cole a nova senha em <span class="tela-ui">Senha de app</span> e clique em <span class="tela-ui">Salvar</span>.</li>
+      <li>Clique em <span class="tela-ui">Testar conexão</span> para confirmar.</li>
+    </ol>
+
+    <h2 id="problemas">Quando algo dá errado</h2>
+
+    <h3 id="login-recusado">O app diz "Login recusado"</h3>
+    <ul>
+      <li>Confira se a conta em <span class="tela-ui">Conta que recebe as faturas</span> é a mesma em que você criou a senha de app. Cada senha de app só funciona na conta onde foi criada.</li>
+      <li>Crie uma senha de app nova e cole de novo; ela pode ter sido apagada.</li>
+      <li>Confira se o IMAP está ativo no Gmail (passo 3 dos <a href="primeiros-passos.html">primeiros passos</a>).</li>
+    </ul>
+
+    <h3 id="nao-apareceu">Uma fatura não apareceu</h3>
+    <ol>
+      <li>Clique em <span class="tela-ui">Buscar novas</span> para garantir que a busca está atualizada.</li>
+      <li>Abra <span class="tela-ui">Regras dos emissores</span>, escolha o banco e clique em <span class="tela-ui">Testar</span>. Para cada email recente aparece se ele seria baixado e, se não, o motivo.</li>
+    </ol>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Motivo no teste</th><th>O que significa</th></tr></thead>
+        <tbody>
+          <tr><td>Remetente não está na lista</td><td>O email veio de um endereço que não é o de faturas do banco, como propaganda.</td></tr>
+          <tr><td>Assunto não tem os termos exigidos</td><td>O banco mudou o assunto do email; ajuste os termos de assunto nas regras.</td></tr>
+          <tr><td>Gmail não confirmou a autenticação</td><td>O email não comprovou que veio do banco. Pode ser golpe; não abra os anexos.</td></tr>
+          <tr><td>Nenhum anexo casa com os padrões</td><td>O email tem anexos, mas nenhum do tipo esperado, como um relatório no lugar da fatura.</td></tr>
+          <tr><td>Este PDF já foi baixado</td><td>Está tudo certo: a fatura já está na pasta.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="arquivo-sumiu">Aparece "Arquivo não encontrado"</h3>
+    <p>O PDF foi movido ou apagado fora do Fatura. Se você moveu a pasta, clique em <span class="tela-ui">Procurar em outra pasta…</span>, no painel do documento, e escolha onde os arquivos estão agora. O Fatura reconhece cada arquivo pelo conteúdo, então só religa os que são exatamente os mesmos.</p>
+
+    <div class="proximo"><a href="primeiros-passos.html">← Primeiros passos</a><a href="telas.html">As telas do app →</a></div>
+  </main>
+</div>
+<footer class="rodape">
+  <div class="envoltorio">
+    <span>Fatura · faturas do Gmail organizadas no seu computador</span>
+    <nav aria-label="Rodapé"><a href="../index.html">Início</a><a href="index.html">Ajuda</a></nav>
+  </div>
+</footer>
+</body>
+</html>

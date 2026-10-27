@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>As telas do Fatura</title>
+<meta name="description" content="O que significa cada tela, botão e número do Fatura, e como os arquivos são nomeados.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header class="topo">
+  <div class="envoltorio">
+    <a class="marca" href="../index.html">
+      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="3" width="18" height="22" rx="3"></rect><path d="M9.5 9.5h9M9.5 14h9M9.5 18.5h5.5"></path></svg>
+      Fatura
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#baixar">Baixar</a>
+      <a href="index.html">Ajuda</a>
+    </nav>
+  </div>
+</header>
+<div class="envoltorio ajuda">
+  <nav class="indice" aria-label="Ajuda">
+    <div><span class="rotulo">Comece aqui</span><a href="primeiros-passos.html">Primeiros passos</a></div>
+    <div><span class="rotulo">Como fazer</span><a href="como-fazer.html">Tarefas do dia a dia</a></div>
+    <div><span class="rotulo">Referência</span><a href="telas.html" aria-current="page">As telas do app</a></div>
+    <div><span class="rotulo">Entenda</span><a href="seguranca.html">Segurança e privacidade</a></div>
+  </nav>
+  <main class="texto">
+    <span class="trilha"><a href="index.html">Ajuda</a> / Referência</span>
+    <h1>As telas do app</h1>
+    <p class="abertura">O que aparece em cada uma das quatro telas do Fatura e o que significa cada número.</p>
+
+    <h2 id="documentos">Documentos</h2>
+    <p>A tela principal. Mostra os PDFs já guardados, do mais recente para o mais antigo.</p>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Parte da tela</th><th>O que é</th></tr></thead>
+        <tbody>
+          <tr><td>Emissores, à esquerda</td><td>Cada banco ativo com o total de documentos guardados. <span class="tela-ui">Todos</span> soma todos, inclusive de bancos desativados.</td></tr>
+          <tr><td>Busca</td><td>Filtra por nome do arquivo, banco ou mês (<span class="mono">2026-09</span> ou <span class="mono">09/2026</span>).</td></tr>
+          <tr><td>Última busca</td><td>Quando foi a última busca e quantos documentos novos ela trouxe.</td></tr>
+          <tr><td>Buscar novas</td><td>Procura agora o que chegou no Gmail desde a última busca.</td></tr>
+          <tr><td>Verificado</td><td>O email foi confirmado como enviado pelo banco antes de o PDF ser guardado.</td></tr>
+          <tr><td>Painel à direita</td><td>De onde veio o documento selecionado e os botões <span class="tela-ui">Abrir PDF</span> e <span class="tela-ui">Mostrar na pasta</span>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Detalhes do documento</h3>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Campo</th><th>Significado</th></tr></thead>
+        <tbody>
+          <tr><td>Recebido</td><td>Data e hora em que o email chegou ao Gmail.</td></tr>
+          <tr><td>Remetente</td><td>Quem enviou: o banco, ou a conta que encaminhou.</td></tr>
+          <tr><td>Autenticação</td><td>Como o Gmail confirmou o remetente. Documentos baixados antes desta informação existir mostram "detalhe não registrado".</td></tr>
+          <tr><td>Nome no email</td><td>Nome original do anexo.</td></tr>
+          <tr><td>SHA-256</td><td>Impressão digital do conteúdo. Dois arquivos com o mesmo valor são idênticos; é assim que o Fatura evita duplicatas.</td></tr>
+          <tr><td>Pasta</td><td>Onde o arquivo está no computador.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="busca">Buscar novas faturas</h2>
+    <p>Janela que acompanha a busca, banco por banco.</p>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Coluna ou estado</th><th>Significado</th></tr></thead>
+        <tbody>
+          <tr><td>Emails</td><td>Emails do remetente do banco com PDF, encontrados no período.</td></tr>
+          <tr><td>Novos</td><td>PDFs guardados nesta busca.</td></tr>
+          <tr><td>Ignorados</td><td>Emails que não eram fatura desse banco ou anexos com nome de PDF que não eram PDF. Quando dois bancos usam o mesmo remetente, os emails de um aparecem como ignorados no outro; é esperado.</td></tr>
+          <tr><td>aguardando · buscando · concluído</td><td>Andamento de cada banco.</td></tr>
+          <tr><td>ainda não tem histórico</td><td>O banco nunca foi buscado. Escolha desde quando buscar ou pule.</td></tr>
+          <tr><td>falhou</td><td>Algo impediu a busca desse banco. Os documentos já guardados continuam; tente de novo mais tarde.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="regras">Regras do emissor</h2>
+    <p>Diz ao Fatura como reconhecer as faturas de um banco. Os valores vêm prontos para os bancos conhecidos; mexa só se o banco mudar o jeito de enviar.</p>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Campo</th><th>Para que serve</th></tr></thead>
+        <tbody>
+          <tr><td>Emissor ativo</td><td>Desmarcado, o banco deixa de ser buscado.</td></tr>
+          <tr><td>Remetentes aceitos</td><td>Endereços que enviam as faturas. <span class="mono">@banco.com.br</span> aceita qualquer endereço desse domínio.</td></tr>
+          <tr><td>Domínios que podem autenticar</td><td>Domínios cuja assinatura digital o Fatura aceita.</td></tr>
+          <tr><td>Assunto deve conter</td><td>Palavras que precisam estar no assunto. Maiúsculas e acentos não importam.</td></tr>
+          <tr><td>Anexos aceitos</td><td>Padrões de nome do anexo, como <span class="mono">*.pdf</span> ou <span class="mono">Invoice-*.pdf</span>. O <span class="mono">*</span> vale qualquer trecho.</td></tr>
+          <tr><td>Pasta</td><td>Onde guardar os PDFs desse banco.</td></tr>
+          <tr><td>Nome do arquivo</td><td>Padrão, nome original ou data + nome original, com exemplo ao lado.</td></tr>
+          <tr><td>Testar</td><td>Aplica as regras da tela, mesmo sem salvar, aos emails recentes e mostra o que seria baixado. Não baixa nada.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Campos com a frase <span class="tela-ui">Definido em … no .env</span> foram configurados fora do app e aparecem só para leitura.</p>
+
+    <h2 id="conta">Conta Gmail</h2>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Campo ou botão</th><th>Para que serve</th></tr></thead>
+        <tbody>
+          <tr><td>Conta que recebe as faturas</td><td>O seu endereço Gmail, não o do banco.</td></tr>
+          <tr><td>Senha de app</td><td>As 16 letras criadas no Google. Depois de salva, não aparece mais na tela.</td></tr>
+          <tr><td>Testar conexão</td><td>Entra no Gmail e conta os emails de cada banco, sem abrir nenhum.</td></tr>
+          <tr><td>Contas que encaminham</td><td>Seus outros emails que encaminham recibos para este Gmail.</td></tr>
+          <tr><td>Quem encaminha NF-e e boletos do SERPRO</td><td>Pessoas que encaminham esses documentos para você.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="bancos">Bancos e emissores reconhecidos</h2>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Emissor</th><th>O que é guardado</th><th>Nome do arquivo</th></tr></thead>
+        <tbody>
+          <tr><td>Santander</td><td>Fatura do cartão</td><td class="mono">santander-fatura-2026-09-29.pdf</td></tr>
+          <tr><td>Inter</td><td>Fatura do cartão (informe de rendimentos fica de fora)</td><td class="mono">inter-fatura-2026-10-10.pdf</td></tr>
+          <tr><td>Anthropic</td><td>Invoices (os recibos ficam de fora)</td><td class="mono">Invoice-A1B2C3D4-0025.pdf</td></tr>
+          <tr><td>SendGrid</td><td>Invoices, recebidos por encaminhamento</td><td class="mono">INV00000000_00000000_00000000.pdf</td></tr>
+          <tr><td>SERPRO</td><td>NF-e, boleto e fatura (relatórios ficam de fora)</td><td class="mono">2026-10-05-[CNPJ]-NFe.pdf</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A data no nome é a do dia em que o email chegou. Se dois arquivos do mesmo banco chegam no mesmo dia, o segundo ganha <span class="mono">-2</span> no fim do nome.</p>
+
+    <div class="proximo"><a href="como-fazer.html">← Tarefas do dia a dia</a><a href="seguranca.html">Segurança e privacidade →</a></div>
+  </main>
+</div>
+<footer class="rodape">
+  <div class="envoltorio">
+    <span>Fatura · faturas do Gmail organizadas no seu computador</span>
+    <nav aria-label="Rodapé"><a href="../index.html">Início</a><a href="index.html">Ajuda</a></nav>
+  </div>
+</footer>
+</body>
+</html>

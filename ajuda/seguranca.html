@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Segurança e privacidade</title>
+<meta name="description" content="O que o Fatura faz com a senha de app, como reconhece golpes e o que fica no seu computador.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,650;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header class="topo">
+  <div class="envoltorio">
+    <a class="marca" href="../index.html">
+      <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="3" width="18" height="22" rx="3"></rect><path d="M9.5 9.5h9M9.5 14h9M9.5 18.5h5.5"></path></svg>
+      Fatura
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="../index.html#como-funciona">Como funciona</a>
+      <a href="../index.html#baixar">Baixar</a>
+      <a href="index.html">Ajuda</a>
+    </nav>
+  </div>
+</header>
+<div class="envoltorio ajuda">
+  <nav class="indice" aria-label="Ajuda">
+    <div><span class="rotulo">Comece aqui</span><a href="primeiros-passos.html">Primeiros passos</a></div>
+    <div><span class="rotulo">Como fazer</span><a href="como-fazer.html">Tarefas do dia a dia</a></div>
+    <div><span class="rotulo">Referência</span><a href="telas.html">As telas do app</a></div>
+    <div><span class="rotulo">Entenda</span><a href="seguranca.html" aria-current="page">Segurança e privacidade</a></div>
+  </nav>
+  <main class="texto">
+    <span class="trilha"><a href="index.html">Ajuda</a> / Entenda</span>
+    <h1>Segurança e privacidade</h1>
+    <p class="abertura">Faturas dizem muito sobre a sua vida financeira, e o Fatura precisa entrar no seu email para encontrá-las. Esta página explica o que ele faz, o que não faz e por quê.</p>
+
+    <h2>Tudo acontece no seu computador</h2>
+    <p>O Fatura não tem servidor, conta de usuário nem nuvem própria. O app conversa com um único lugar, o Gmail, e guarda os PDFs em pastas do seu computador. Não há estatísticas de uso nem envio de dados para quem fez o app.</p>
+    <p>Quem tiver acesso ao seu computador tem acesso às pastas de faturas, como a qualquer outro arquivo seu. Se o computador é compartilhado, guarde as pastas num lugar só seu.</p>
+
+    <h2>Por que uma senha de app</h2>
+    <p>Programas que leem email usam um protocolo chamado IMAP, e o Google exige uma senha de app para isso. Ela tem algumas vantagens sobre a sua senha do Google:</p>
+    <ul>
+      <li>É criada só para o Fatura e não serve para entrar na sua conta Google pelo navegador.</li>
+      <li>Pode ser apagada a qualquer momento em <a href="https://myaccount.google.com/apppasswords">myaccount.google.com/apppasswords</a>, sem trocar a sua senha principal.</li>
+      <li>Se você apagar a senha de app, o Fatura simplesmente deixa de conseguir buscar.</li>
+    </ul>
+    <div class="nota"><strong>Trate a senha de app como uma chave da sua caixa de email.</strong> Mesmo que o Fatura só leia, a senha em si permitiria ler e enviar emails a quem a tivesse. Não a compartilhe; se achar que ela vazou, apague-a no Google e crie outra (veja <a href="como-fazer.html#trocar-senha">Trocar a senha de app</a>).</div>
+
+    <h2>Onde a senha fica guardada</h2>
+    <p>No cofre de senhas do próprio sistema: Chaves do macOS, Gerenciador de Credenciais do Windows ou o chaveiro do Linux. É o mesmo lugar onde o sistema guarda senhas de Wi-Fi e de outros programas. A senha nunca vai para um arquivo de texto do Fatura, nunca aparece na tela depois de salva e nunca é registrada nos logs.</p>
+
+    <h2>O Fatura só lê</h2>
+    <p>A caixa de email é aberta em modo de leitura. Nenhum email é marcado como lido, movido, arquivado ou apagado, e nenhum email é enviado. O botão <span class="tela-ui">Testar conexão</span> nem abre os emails: só conta quantos existem.</p>
+
+    <h2>Como ele reconhece um golpe</h2>
+    <p>Qualquer pessoa pode mandar um email dizendo ser o seu banco. Por isso o Fatura não confia só no remetente. Quando um email chega, o Gmail confere a assinatura digital que o banco coloca nas mensagens e anota o resultado no próprio email. O Fatura só guarda o PDF quando essa conferência deu certo para o domínio do banco.</p>
+    <p>Um email falso que imita o remetente do banco não tem essa assinatura e é ignorado. No teste de regras, ele aparece como <span class="tela-ui">Gmail não confirmou a autenticação</span>.</p>
+
+    <h2>O que fica guardado</h2>
+    <ul>
+      <li><strong>Os PDFs</strong>, nas pastas de cada banco, até você apagar. O Fatura nunca apaga arquivos.</li>
+      <li><strong>Um registro</strong> de cada documento: de qual email veio, quando chegou e a impressão digital do arquivo. É isso que evita duplicatas e alimenta o painel de detalhes.</li>
+      <li><strong>Nada do conteúdo dos emails.</strong> O registro não guarda o assunto nem o texto das mensagens.</li>
+    </ul>
+
+    <h2>Se você parar de usar</h2>
+    <ol>
+      <li>Apague a senha de app em <a href="https://myaccount.google.com/apppasswords">myaccount.google.com/apppasswords</a>.</li>
+      <li>Desinstale o Fatura.</li>
+      <li>As pastas de faturas continuam no computador; apague-as se não quiser mais os arquivos.</li>
+    </ol>
+
+    <div class="proximo"><a href="telas.html">← As telas do app</a><a href="index.html">Ajuda</a></div>
+  </main>
+</div>
+<footer class="rodape">
+  <div class="envoltorio">
+    <span>Fatura · faturas do Gmail organizadas no seu computador</span>
+    <nav aria-label="Rodapé"><a href="../index.html">Início</a><a href="index.html">Ajuda</a></nav>
+  </div>
+</footer>
+</body>
+</html>
